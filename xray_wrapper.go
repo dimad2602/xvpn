@@ -182,7 +182,7 @@ func StopXray() string {
 }
 
 // Xray's version
-func XrayVersion() string {
+func XvpnVersion() string {
 	var response nodep.CallResponse[string]
-	return response.EncodeToBase64(xray.XrayVersion(), nil)
+	return response.EncodeToBase64(xray.XvpnVersion(), nil)
 }

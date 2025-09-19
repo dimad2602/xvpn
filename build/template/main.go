@@ -79,7 +79,7 @@ func CGoStopXray() *C.char {
 	return C.CString(StopXray())
 }
 
-//export CGoXrayVersion
-func CGoXrayVersion() *C.char {
-	return C.CString(XrayVersion())
+//export CGoXvpnVersion
+func CGoXvpnVersion() *C.char {
+	return C.CString(XvpnVersion())
 }

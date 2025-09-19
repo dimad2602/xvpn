@@ -77,6 +77,6 @@ func StopXray() error {
 }
 
 // Xray's version
-func XrayVersion() string {
+func XvpnVersion() string {
 	return core.Version()
 }

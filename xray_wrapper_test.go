@@ -211,10 +211,10 @@ func TestRunXray(t *testing.T) {
 	handleTestResponse(response, t)
 }
 
-// TestXrayVersion tests the XrayVersion function.
-func TestXrayVersion(t *testing.T) {
-	// Call the XrayVersion function
-	version := XrayVersion()
+// TestXvpnVersion tests the XvpnVersion function.
+func TestXvpnVersion(t *testing.T) {
+	// Call the XvpnVersion function
+	version := XvpnVersion()
 
 	// Decode the base64 response to get the version string
 	decodedVersion, err := base64.StdEncoding.DecodeString(version)
