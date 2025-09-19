@@ -3,8 +3,8 @@
 package libXray
 
 import (
-	c "github.com/xtls/libxray/controller"
-	"github.com/xtls/libxray/dns"
+	c "github.com/dimad2602/xvpn/controller"
+	"github.com/dimad2602/xvpn/dns"
 )
 
 type DialerController interface {

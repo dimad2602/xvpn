@@ -1,4 +1,4 @@
-module github.com/xtls/libxray
+module github.com/dimad2602/xvpn
 
 go 1.24.4
 

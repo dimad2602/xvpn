@@ -5,9 +5,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 
-	"github.com/xtls/libxray/geo"
-	"github.com/xtls/libxray/nodep"
-	"github.com/xtls/libxray/xray"
+	"github.com/dimad2602/xvpn/geo"
+	"github.com/dimad2602/xvpn/nodep"
+	"github.com/dimad2602/xvpn/xray"
 )
 
 type CountGeoDataRequest struct {
