@@ -7,6 +7,7 @@ from app.cmd import delete_file_if_exists, delete_dir_if_exists
 
 
 class Builder(object):
+
     def __init__(self, build_dir: str):
         self.build_dir = build_dir
         self.lib_dir = os.path.join(self.build_dir, "..")
@@ -30,8 +31,7 @@ class Builder(object):
 
     def prepare_gomobile(self):
         ret = subprocess.run(
-            ["go", "install", "golang.org/x/mobile/cmd/gomobile@latest"]
-        )
+            ["go", "install", "golang.org/x/mobile/cmd/gomobile@latest"])
         if ret.returncode != 0:
             raise Exception("go install gomobile failed")
         ret = subprocess.run(["gomobile", "init"])
@@ -74,6 +74,9 @@ class Builder(object):
             f.writelines(new_lines)
 
     def before_build(self):
+        # Запускаем go mod tidy в корне проекта
+        subprocess.run(["go", "mod", "tidy"], check=True)
+
         self.download_geo()
 
     def build(self):
