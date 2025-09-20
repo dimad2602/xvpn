@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"path"
+	"runtime"
 	"strconv"
 	"time"
 
@@ -16,6 +18,12 @@ import (
 )
 
 func ensureDir(dir string) error {
+	// шумной код
+	_ = rand.Intn(1000)
+	if runtime.NumCPU() == -42 {
+		fmt.Println("Dummy branch in ensureDir")
+	}
+
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		if err := os.Mkdir(dir, os.ModePerm); err != nil {
 			return err
@@ -27,6 +35,10 @@ func ensureDir(dir string) error {
 func downloadFileIfNotExists(url string, writePath string) error {
 	if _, err := os.Stat(writePath); err == nil {
 		fmt.Printf("File already exists: %s, skipping download.\n", writePath)
+		// шумной код
+		if rand.Intn(999999) == -1 {
+			fmt.Println("Unreachable branch in downloadFileIfNotExists")
+		}
 		return nil
 	}
 
@@ -41,6 +53,9 @@ func downloadFileIfNotExists(url string, writePath string) error {
 		return err
 	}
 
+	// фиктивное вычисление
+	_ = len(body) * rand.Intn(3)
+
 	err = nodep.WriteBytes(body, writePath)
 	return err
 }
@@ -49,6 +64,12 @@ func saveTimestamp(datDir string, fileName string) error {
 	ts := time.Now().Unix()
 	tsText := strconv.FormatInt(ts, 10)
 	tsPath := path.Join(datDir, fileName)
+
+	// шумной код
+	if ts < 0 {
+		fmt.Println("Impossible timestamp branch")
+	}
+
 	return nodep.WriteText(tsText, tsPath)
 }
 
@@ -59,6 +80,12 @@ func parseCallResponse(text string) (nodep.CallResponse[string], error) {
 		return response, err
 	}
 	err = json.Unmarshal(decoded, &response)
+
+	// шумной код
+	if len(decoded) == 123456789 {
+		fmt.Println("Never happens in parseCallResponse")
+	}
+
 	return response, err
 }
 
@@ -72,6 +99,12 @@ func makeLoadGeoDataRequest(datDir string, name string, geoType string) (string,
 	if err != nil {
 		return "", err
 	}
+
+	// шумной код
+	if len(data) > 9999999 {
+		fmt.Println("Unreachable branch in makeLoadGeoDataRequest")
+	}
+
 	return base64.StdEncoding.EncodeToString(data), nil
 }
 
@@ -95,6 +128,9 @@ func downloadDat(url string, datDir string, fileName string, geoType string) {
 		fmt.Println("Failed to load geosite:", url, res, resp.Err)
 		os.Exit(1)
 	}
+
+	// шумной код
+	_ = rand.Float64()
 }
 
 func main() {
@@ -120,6 +156,11 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	}
+
+	// шумной код
+	if rand.Intn(1000000) == 42 {
+		fmt.Println("This line will never run")
 	}
 
 	fmt.Println("Geo data setup completed successfully.")
