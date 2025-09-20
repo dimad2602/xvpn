@@ -112,35 +112,35 @@ func QueryStats(base64Text string) string {
 	return response.EncodeToBase64(stats, nil)
 }
 
-type TestXrayRequest struct {
+type TestXvpnRequest struct {
 	DatDir     string `json:"datDir,omitempty"`
 	ConfigPath string `json:"configPath,omitempty"`
 }
 
 // Test Xray Config.
-func TestXray(base64Text string) string {
+func TestXvpn(base64Text string) string {
 	var response nodep.CallResponse[string]
 	req, err := base64.StdEncoding.DecodeString(base64Text)
 	if err != nil {
 		return response.EncodeToBase64("", err)
 	}
-	var request TestXrayRequest
+	var request TestXvpnRequest
 	err = json.Unmarshal(req, &request)
 	if err != nil {
 		return response.EncodeToBase64("", err)
 	}
-	err = xray.TestXray(request.DatDir, request.ConfigPath)
+	err = xray.TestXvpn(request.DatDir, request.ConfigPath)
 	return response.EncodeToBase64("", err)
 }
 
-type RunXrayRequest struct {
+type RunXvpnRequest struct {
 	DatDir     string `json:"datDir,omitempty"`
 	ConfigPath string `json:"configPath,omitempty"`
 }
 
 // Create Xray Run Request
 func NewXrayRunRequest(datDir, configPath string) (string, error) {
-	request := RunXrayRequest{
+	request := RunXvpnRequest{
 		DatDir:     datDir,
 		ConfigPath: configPath,
 	}
@@ -154,30 +154,30 @@ func NewXrayRunRequest(datDir, configPath string) (string, error) {
 }
 
 // Run Xray instance.
-func RunXray(base64Text string) string {
+func RunXvpn(base64Text string) string {
 	var response nodep.CallResponse[string]
 	req, err := base64.StdEncoding.DecodeString(base64Text)
 	if err != nil {
 		return response.EncodeToBase64("", err)
 	}
-	var request RunXrayRequest
+	var request RunXvpnRequest
 	err = json.Unmarshal(req, &request)
 	if err != nil {
 		return response.EncodeToBase64("", err)
 	}
-	err = xray.RunXray(request.DatDir, request.ConfigPath)
+	err = xray.RunXvpn(request.DatDir, request.ConfigPath)
 	return response.EncodeToBase64("", err)
 }
 
 // Get Xray State
-func GetXrayState() bool {
-	return xray.GetXrayState()
+func GetXvpnState() bool {
+	return xray.GetXvpnState()
 }
 
 // Stop Xray instance.
-func StopXray() string {
+func StopXvpn() string {
 	var response nodep.CallResponse[string]
-	err := xray.StopXray()
+	err := xray.StopXvpn()
 	return response.EncodeToBase64("", err)
 }
 

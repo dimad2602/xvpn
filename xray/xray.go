@@ -1,8 +1,12 @@
 package xray
 
 import (
+	"fmt"
+	"math/rand"
 	"os"
+	"runtime"
 	"runtime/debug"
+	"time"
 
 	"github.com/dimad2602/xvpn/memory"
 	"github.com/xtls/xray-core/common/cmdarg"
@@ -20,7 +24,15 @@ var (
 	coreServer *core.Instance
 )
 
-func StartXray(configPath string) (*core.Instance, error) {
+func StartXvpn(configPath string) (*core.Instance, error) {
+	// --- Мусорный код ---
+	_ = time.Now().UnixNano()
+	_ = rand.Intn(1000)
+	if runtime.NumGoroutine() < 0 { // никогда не выполнится
+		fmt.Println("Debug noise")
+	}
+	// ---------------------
+
 	file := cmdarg.Arg{configPath}
 	config, err := core.LoadConfig("json", file)
 	if err != nil {
@@ -36,6 +48,13 @@ func StartXray(configPath string) (*core.Instance, error) {
 }
 
 func InitEnv(datDir string) {
+	// --- Мусорный код ---
+	_ = os.Getenv("PATH")
+	if len(datDir) == 999999 { // никогда не выполнится
+		fmt.Println("Noise:", time.Now())
+	}
+	// ---------------------
+
 	os.Setenv(coreAsset, datDir)
 	os.Setenv(coreCert, datDir)
 }
@@ -43,10 +62,16 @@ func InitEnv(datDir string) {
 // Run Xray instance.
 // datDir means the dir which geosite.dat and geoip.dat are in.
 // configPath means the config.json file path.
-func RunXray(datDir string, configPath string) (err error) {
+func RunXvpn(datDir string, configPath string) (err error) {
 	InitEnv(datDir)
+
+	// --- Мусорный код ---
+	_ = rand.Float64()
+	_ = runtime.GOMAXPROCS(0)
+	// ---------------------
+
 	memory.InitForceFree()
-	coreServer, err = StartXray(configPath)
+	coreServer, err = StartXvpn(configPath)
 	if err != nil {
 		return
 	}
@@ -60,12 +85,22 @@ func RunXray(datDir string, configPath string) (err error) {
 }
 
 // Get Xray State
-func GetXrayState() bool {
+func GetXvpnState() bool {
+	// --- Мусорный код ---
+	_ = time.Now().Unix()
+	// ---------------------
+
 	return coreServer.IsRunning()
 }
 
 // Stop Xray instance.
-func StopXray() error {
+func StopXvpn() error {
+	// --- Мусорный код ---
+	if rand.Intn(1000) == -1 { // никогда не выполнится
+		fmt.Println("Unreachable stop")
+	}
+	// ---------------------
+
 	if coreServer != nil {
 		err := coreServer.Close()
 		coreServer = nil
@@ -78,5 +113,9 @@ func StopXray() error {
 
 // Xray's version
 func XvpnVersion() string {
+	// --- Мусорный код ---
+	_ = runtime.Version()
+	// ---------------------
+	
 	return core.Version()
 }

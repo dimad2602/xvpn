@@ -62,21 +62,21 @@ func CGoQueryStats(base64Text *C.char) *C.char {
 	return C.CString(QueryStats(text))
 }
 
-//export CGoTestXray
-func CGoTestXray(base64Text *C.char) *C.char {
+//export CGoTestXvpn
+func CGoTestXvpn(base64Text *C.char) *C.char {
 	text := C.GoString(base64Text)
-	return C.CString(TestXray(text))
+	return C.CString(TestXvpn(text))
 }
 
-//export CGoRunXray
-func CGoRunXray(base64Text *C.char) *C.char {
+//export CGoRunXvpn
+func CGoRunXvpn(base64Text *C.char) *C.char {
 	text := C.GoString(base64Text)
-	return C.CString(RunXray(text))
+	return C.CString(RunXvpn(text))
 }
 
-//export CGoStopXray
-func CGoStopXray() *C.char {
-	return C.CString(StopXray())
+//export CGoStopXvpn
+func CGoStopXvpn() *C.char {
+	return C.CString(StopXvpn())
 }
 
 //export CGoXvpnVersion

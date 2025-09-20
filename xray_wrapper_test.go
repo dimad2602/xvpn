@@ -117,14 +117,14 @@ func handleTestResponse(response string, t *testing.T) {
 
 	// Check if the "success" field is true
 	if success, ok := result["success"].(bool); !ok || !success {
-		t.Fatalf("TestXray failed: %v", response)
+		t.Fatalf("TestXvpn failed: %v", response)
 	}
 
-	t.Log("TestXray passed successfully", string(decoded))
+	t.Log("TestXvpn passed successfully", string(decoded))
 }
 
-// TestRunXrayWithVmess tests running Xray with VMess configuration
-func TestRunXrayWithVmess(t *testing.T) {
+// TestRunXvpnWithVmess tests running Xray with VMess configuration
+func TestRunXvpnWithVmess(t *testing.T) {
 	// Example VMess configuration (base64 encoded)
 	vmess := `xxx`
 
@@ -149,7 +149,7 @@ func TestRunXrayWithVmess(t *testing.T) {
 
 	// Create a request for testing Xray
 	datDir := filepath.Join(projectRoot, "dat")
-	request := TestXrayRequest{
+	request := TestXvpnRequest{
 		DatDir:     datDir,
 		ConfigPath: configPath,
 	}
@@ -160,15 +160,15 @@ func TestRunXrayWithVmess(t *testing.T) {
 		t.Fatalf("Failed to encode request: %v", err)
 	}
 
-	// Call TestXray with the base64-encoded request
-	response := TestXray(base64Request)
+	// Call TestXvpn with the base64-encoded request
+	response := TestXvpn(base64Request)
 
 	// Handle and check the response
 	handleTestResponse(response, t)
 }
 
-// TestRunXray tests running Xray with a VMess configuration for real-world usage
-func TestRunXray(t *testing.T) {
+// TestRunXvpn tests running Xray with a VMess configuration for real-world usage
+func TestRunXvpn(t *testing.T) {
 	// Example VMess configuration (same as in the previous test)
 	vmess := `xxx`
 
@@ -193,7 +193,7 @@ func TestRunXray(t *testing.T) {
 
 	// Create a request for running Xray
 	datDir := filepath.Join(projectRoot, "dat")
-	runRequest := RunXrayRequest{
+	runRequest := RunXvpnRequest{
 		DatDir:     datDir,
 		ConfigPath: configPath, // Set max memory limit for Xray
 	}
@@ -204,8 +204,8 @@ func TestRunXray(t *testing.T) {
 		t.Fatalf("Failed to encode request: %v", err)
 	}
 
-	// Call RunXray with the base64-encoded request
-	response := RunXray(base64Request)
+	// Call RunXvpn with the base64-encoded request
+	response := RunXvpn(base64Request)
 
 	// Handle and check the response
 	handleTestResponse(response, t)
