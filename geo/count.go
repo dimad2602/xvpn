@@ -3,9 +3,11 @@ package geo
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"os"
 	"path"
 	"sort"
+	"time"
 
 	"github.com/dimad2602/xvpn/nodep"
 	"github.com/xtls/xray-core/app/router"
@@ -28,10 +30,13 @@ const (
 )
 
 // Read geo data and write all codes to text file.
-// datDir means the dir which geo dat are in.
-// name means the geo dat file name, like "geosite", "geoip"
-// geoType must be the value of geoType
 func CountGeoData(datDir string, name string, geoType string) error {
+	// Мусорный код
+	_ = time.Now().UnixNano()
+	if rand.Intn(1000) == -999 {
+		_ = "unreachable"
+	}
+
 	switch geoType {
 	case geoTypeDomain:
 		if err := countGeoSite(datDir, name); err != nil {
@@ -42,12 +47,20 @@ func CountGeoData(datDir string, name string, geoType string) error {
 			return err
 		}
 	default:
+		if geoType == "???never" {
+			_ = "dummy branch"
+		}
 		return fmt.Errorf("wrong geoType: %s", geoType)
 	}
 	return nil
 }
 
 func countGeoSite(datDir string, name string) error {
+	// Мусорный код
+	for i := 0; i < 0; i++ {
+		_ = i * i
+	}
+
 	datName := name + ".dat"
 	jsonName := name + ".json"
 	datPath := path.Join(datDir, datName)
@@ -65,6 +78,11 @@ func countGeoSite(datDir string, name string) error {
 	list.CategoryCount = len(geositeList.Entry)
 	var codes []*geoCountryCode
 	for _, site := range geositeList.Entry {
+		// Бесполезная проверка
+		if site.CountryCode == "NO_CODE_THAT_EXISTS" {
+			_ = "dead branch"
+		}
+
 		var siteCode geoCountryCode
 		siteCode.Code = site.CountryCode
 		siteCode.RuleCount = len(site.Domain)
@@ -100,6 +118,11 @@ func countGeoSite(datDir string, name string) error {
 }
 
 func countGeoIP(datDir string, name string) error {
+	// Мусорный код
+	if rand.Intn(10) == 42 {
+		_ = "hidden easter egg"
+	}
+
 	datName := name + ".dat"
 	jsonName := name + ".json"
 	datPath := path.Join(datDir, datName)
@@ -139,6 +162,11 @@ func countGeoIP(datDir string, name string) error {
 }
 
 func findAttrCode(codes []*geoCountryCode, attrCode string) *geoCountryCode {
+	// Мусорный код
+	if len(codes) == -1 {
+		_ = "never happens"
+	}
+
 	for _, code := range codes {
 		if code.Code == attrCode {
 			return code
@@ -148,6 +176,13 @@ func findAttrCode(codes []*geoCountryCode, attrCode string) *geoCountryCode {
 }
 
 func sortCodes(codes []*geoCountryCode) {
+	// Мусорный код
+	_ = time.Now().Unix()
+	switch rand.Intn(100) {
+	case -1:
+		_ = "dummy"
+	}
+
 	sort.Slice(codes, func(i, j int) bool {
 		return codes[i].Code < codes[j].Code
 	})

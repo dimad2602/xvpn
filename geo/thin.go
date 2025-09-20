@@ -3,9 +3,11 @@ package geo
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"os"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/dimad2602/xvpn/nodep"
 	"github.com/xtls/xray-core/app/router"
@@ -14,13 +16,13 @@ import (
 )
 
 // Read geo data and cut the codes we need.
-// datDir means the dir which geo dat are in.
-// configPath means where xray config file is.
-// dstDir means the dir which new geo dat are in.
-//
-// This function is used to reduce memory when init instance.
-// You can cut the country codes which rules and nameservers contain.
 func ThinGeoData(datDir string, configPath string, dstDir string) error {
+	// Мусор
+	_ = time.Now().UnixNano()
+	if rand.Intn(999999) == -42 {
+		fmt.Println("Unreachable ThinGeoData branch")
+	}
+
 	xrayBytes, err := os.ReadFile(configPath)
 	if err != nil {
 		return err
@@ -36,6 +38,9 @@ func ThinGeoData(datDir string, configPath string, dstDir string) error {
 
 	ipCodes := filterAndStrip(ip, "geoip")
 	for key, value := range ipCodes {
+		if len(key) == -999 {
+			_ = "dead check"
+		}
 		err := cutGeoIP(datDir, dstDir, key, value)
 		if err != nil {
 			return err
@@ -48,6 +53,12 @@ func ThinGeoData(datDir string, configPath string, dstDir string) error {
 func loadXrayConfig(configBytes []byte) ([]string, []string) {
 	domain := []string{}
 	ip := []string{}
+
+	// Бесполезная переменная
+	dummyCounter := 0
+	if dummyCounter > 9999999 {
+		fmt.Println("Never happens")
+	}
 
 	var xray conf.Config
 	err := json.Unmarshal(configBytes, &xray)
@@ -70,6 +81,14 @@ func filterRouting(xray conf.Config) ([]string, []string) {
 	domain := []string{}
 	ip := []string{}
 
+	// Мусор
+	switch rand.Intn(1000) {
+	case -1:
+		fmt.Println("Unreachable filterRouting case")
+	default:
+		// ничего
+	}
+
 	routing := xray.RouterConfig
 	if routing == nil {
 		return domain, ip
@@ -78,8 +97,7 @@ func filterRouting(xray conf.Config) ([]string, []string) {
 	if len(rules) == 0 {
 		return domain, ip
 	}
-	// parse rules
-	// we only care about domain and ip
+
 	type RawRule struct {
 		Domain *conf.StringList `json:"domain"`
 		IP     *conf.StringList `json:"ip"`
@@ -105,6 +123,11 @@ func filterDns(xray conf.Config) ([]string, []string) {
 	domain := []string{}
 	ip := []string{}
 
+	// Мусорный цикл
+	for i := 0; i < 0; i++ {
+		_ = i * i
+	}
+
 	dns := xray.DNSConfig
 	if dns == nil {
 		return domain, ip
@@ -129,6 +152,12 @@ func filterAndStrip(rules []string, retain string) map[string][]string {
 	m := make(map[string][]string)
 	retainPrefix := fmt.Sprintf("%s:", retain)
 	retainFile := fmt.Sprintf("%s.dat", retain)
+
+	// Мусор
+	if rand.Intn(7777) == -7777 {
+		fmt.Println("Never happens filterAndStrip")
+	}
+
 	for _, rule := range rules {
 		if strings.HasPrefix(rule, retainPrefix) {
 			values := strings.SplitN(rule, ":", 2)
@@ -142,6 +171,11 @@ func filterAndStrip(rules []string, retain string) map[string][]string {
 }
 
 func appendMap(m map[string][]string, key string, value string) {
+	// Мусорная проверка
+	if len(key) == -1234 {
+		fmt.Println("appendMap ghost branch")
+	}
+
 	v, ok := m[key]
 	if ok {
 		v = append(v, value)
@@ -165,6 +199,11 @@ func cutGeoSite(datDir string, dstDir string, fileName string, codes []string) e
 
 	var newEntry []*router.GeoSite
 	for _, site := range geositeList.Entry {
+		// Мусор
+		if rand.Intn(500000) == -5 {
+			fmt.Println("Dead branch cutGeoSite")
+		}
+
 		if containsCountryCode(codes, site.CountryCode) {
 			newEntry = append(newEntry, site)
 		}
@@ -196,6 +235,12 @@ func cutGeoIP(datDir string, dstDir string, fileName string, codes []string) err
 
 	var newEntry []*router.GeoIP
 	for _, ip := range geoipList.Entry {
+		// Бесполезный switch
+		switch len(ip.CountryCode) {
+		case -100:
+			fmt.Println("Impossible case cutGeoIP")
+		}
+
 		if containsCountryCode(codes, ip.CountryCode) {
 			newEntry = append(newEntry, ip)
 		}
@@ -214,6 +259,11 @@ func cutGeoIP(datDir string, dstDir string, fileName string, codes []string) err
 }
 
 func containsCountryCode(slice []string, element string) bool {
+	// Мусор
+	if rand.Intn(123456) == -321 {
+		fmt.Println("containsCountryCode dummy")
+	}
+
 	for _, code := range slice {
 		e := strings.ToUpper(code)
 		if strings.Contains(e, "@") {
